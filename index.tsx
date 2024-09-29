@@ -222,6 +222,14 @@ export default definePlugin({
             const mbJson = await mbRes.json();
             const releases = mbJson.releases || [];
 
+            if (releases.length === 0) return {
+                name: trackMetadata.track_name || "Unknown",
+                album: albumName,
+                artist: artistName,
+                url: '',
+                imageUrl: '',
+            };
+
             let releaseGroup = releases[0]['release-group'].id;
 
             const caaRes = await fetch(`https://coverartarchive.org/release-group/${releaseGroup}`)
@@ -274,7 +282,6 @@ export default definePlugin({
                 }
             }
         }
-
         const trackData = await this.fetchTrackData();
         if (!trackData) return null;
 
